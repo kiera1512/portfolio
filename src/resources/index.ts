@@ -12,6 +12,7 @@ export {
   getContent,
   getLocaleFromPathname,
   getLocalizedPath,
+  normalizePathname,
   switchLocalePath,
 } from "./content";
 

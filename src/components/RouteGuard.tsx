@@ -1,7 +1,7 @@
 "use client";
 
 import NotFound from "@/app/not-found";
-import { routes } from "@/resources";
+import { normalizePathname, routes } from "@/resources";
 import { Flex, Spinner } from "@once-ui-system/core";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -22,14 +22,15 @@ const RouteGuard: React.FC<RouteGuardProps> = ({ children }) => {
 
       const checkRouteEnabled = () => {
         if (!pathname) return false;
+        const normalizedPathname = normalizePathname(pathname);
 
-        if (pathname in routes) {
-          return routes[pathname as keyof typeof routes];
+        if (normalizedPathname in routes) {
+          return routes[normalizedPathname as keyof typeof routes];
         }
 
         const dynamicRoutes = ["/projects", "/en/projects"] as const;
         for (const route of dynamicRoutes) {
-          if (pathname?.startsWith(route) && routes[route]) {
+          if (normalizedPathname.startsWith(route) && routes[route]) {
             return true;
           }
         }

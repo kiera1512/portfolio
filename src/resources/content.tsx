@@ -4,6 +4,15 @@ import { Line, Row, Text } from "@once-ui-system/core";
 export const locales = ["vi", "en"] as const;
 export type Locale = (typeof locales)[number];
 export const defaultLocale: Locale = "vi";
+const siteURL = process.env.NEXT_PUBLIC_SITE_URL || "https://kiera1512.github.io/portfolio";
+const siteBasePath = (() => {
+  try {
+    const pathname = new URL(siteURL).pathname.replace(/\/$/, "");
+    return pathname === "/" ? "" : pathname;
+  } catch {
+    return "";
+  }
+})();
 
 const person: Person = {
   firstName: "An",
@@ -43,15 +52,30 @@ export function getLocalizedPath(locale: Locale, path: string) {
   return `/en${normalizedPath}`;
 }
 
+export function normalizePathname(pathname: string) {
+  const sanitizedPathname = pathname.replace(/\/$/, "") || "/";
+
+  if (siteBasePath && sanitizedPathname.startsWith(siteBasePath)) {
+    const strippedPathname = sanitizedPathname.slice(siteBasePath.length);
+    return strippedPathname || "/";
+  }
+
+  return sanitizedPathname;
+}
+
 export function getLocaleFromPathname(pathname: string): Locale {
-  return pathname === "/en" || pathname.startsWith("/en/") ? "en" : defaultLocale;
+  const normalizedPathname = normalizePathname(pathname);
+  return normalizedPathname === "/en" || normalizedPathname.startsWith("/en/")
+    ? "en"
+    : defaultLocale;
 }
 
 export function switchLocalePath(pathname: string, targetLocale: Locale) {
-  const normalizedPath = pathname.startsWith("/en")
-    ? pathname.replace(/^\/en/, "") || "/"
-    : pathname;
-  return getLocalizedPath(targetLocale, normalizedPath);
+  const normalizedPathname = normalizePathname(pathname);
+  const localizedPath = normalizedPathname.startsWith("/en")
+    ? normalizedPathname.replace(/^\/en/, "") || "/"
+    : normalizedPathname;
+  return getLocalizedPath(targetLocale, localizedPath);
 }
 
 type LocalizedContent = {

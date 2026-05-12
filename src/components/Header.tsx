@@ -10,6 +10,7 @@ import {
   display,
   getContent,
   getLocaleFromPathname,
+  normalizePathname,
   person,
   routes,
   switchLocalePath,
@@ -51,6 +52,7 @@ const TimeDisplay: React.FC<TimeDisplayProps> = ({ timeZone, locale = "en-GB" })
 
 export const Header = () => {
   const pathname = usePathname() ?? "/";
+  const normalizedPathname = normalizePathname(pathname);
   const locale = getLocaleFromPathname(pathname);
   const localized = getContent(locale);
 
@@ -101,7 +103,7 @@ export const Header = () => {
                 <ToggleButton
                   prefixIcon="home"
                   href={localized.home.path}
-                  selected={pathname === localized.home.path}
+                  selected={normalizedPathname === localized.home.path}
                 />
               )}
               <Line background="neutral-alpha-medium" vert maxHeight="24" />
@@ -112,14 +114,14 @@ export const Header = () => {
                       prefixIcon="person"
                       href={localized.about.path}
                       label={localized.about.label}
-                      selected={pathname === localized.about.path}
+                      selected={normalizedPathname === localized.about.path}
                     />
                   </Row>
                   <Row hide s={{ hide: false }}>
                     <ToggleButton
                       prefixIcon="person"
                       href={localized.about.path}
-                      selected={pathname === localized.about.path}
+                      selected={normalizedPathname === localized.about.path}
                     />
                   </Row>
                 </>
@@ -132,8 +134,8 @@ export const Header = () => {
                       href={localized.work.path}
                       label={localized.work.label}
                       selected={
-                        pathname === localized.work.path ||
-                        pathname.startsWith(`${localized.work.path}/`)
+                        normalizedPathname === localized.work.path ||
+                        normalizedPathname.startsWith(`${localized.work.path}/`)
                       }
                     />
                   </Row>
@@ -142,8 +144,8 @@ export const Header = () => {
                       prefixIcon="grid"
                       href={localized.work.path}
                       selected={
-                        pathname === localized.work.path ||
-                        pathname.startsWith(`${localized.work.path}/`)
+                        normalizedPathname === localized.work.path ||
+                        normalizedPathname.startsWith(`${localized.work.path}/`)
                       }
                     />
                   </Row>

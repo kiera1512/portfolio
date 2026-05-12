@@ -4,7 +4,7 @@ import "@/resources/custom.css";
 
 import classNames from "classnames";
 
-import { Footer, Header, LocaleSync, Providers, RouteGuard } from "@/components";
+import { Footer, Header, LocaleSync, Providers } from "@/components";
 import { ThemeScript } from "@/components/ThemeScript";
 import { baseURL, effects, fonts, home } from "@/resources";
 import {
@@ -112,7 +112,7 @@ export default async function RootLayout({
             style={{ minWidth: 0 }}
           >
             <Flex horizontal="center" fillWidth minHeight="0">
-              <RouteGuard>{children}</RouteGuard>
+              {children}
             </Flex>
           </Flex>
           <Footer />
