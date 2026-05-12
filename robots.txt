@@ -1,0 +1,3 @@
+User-Agent: *
+
+Sitemap: https://kiera1512.github.io/portfolio/sitemap.xml
