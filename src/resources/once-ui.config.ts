@@ -15,7 +15,7 @@ import type { NextFontWithVariable } from "next/dist/compiled/@next/font";
 
 import { home, person } from "./content";
 
-const baseURL = "https://demo.magic-portfolio.com";
+const baseURL = process.env.NEXT_PUBLIC_SITE_URL || "https://kiera1512.github.io/portfolio";
 
 const routes: RoutesConfig = {
   "/": true,

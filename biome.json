@@ -7,7 +7,7 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "ignore": [".next", "src/components/ThemeScript.tsx"]
+    "ignore": [".next", "out", "next-env.d.ts", "src/components/ThemeScript.tsx"]
   },
   "formatter": {
     "enabled": true,

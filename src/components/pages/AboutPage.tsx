@@ -20,19 +20,19 @@ import styles from "@/components/about/about.module.scss";
 import { type Locale, baseURL, getContent, person, social } from "@/resources";
 
 export function getAboutMetadata(locale: Locale) {
-  const { about } = getContent(locale);
+  const { about, home } = getContent(locale);
 
   return Meta.generate({
     title: about.title,
     description: about.description,
     baseURL,
-    image: `/api/og/generate?title=${encodeURIComponent(about.title)}`,
+    image: home.image,
     path: about.path,
   });
 }
 
 export function AboutPage({ locale }: { locale: Locale }) {
-  const { about } = getContent(locale);
+  const { about, home } = getContent(locale);
   const structure = [
     { title: about.intro.title, display: about.intro.display, items: [] },
     {
@@ -60,7 +60,7 @@ export function AboutPage({ locale }: { locale: Locale }) {
         title={about.title}
         description={about.description}
         path={about.path}
-        image={`/api/og/generate?title=${encodeURIComponent(about.title)}`}
+        image={home.image}
         author={{
           name: person.name,
           url: `${baseURL}${about.path}`,
@@ -234,12 +234,7 @@ export function AboutPage({ locale }: { locale: Locale }) {
                       ))}
                     </Column>
                     {experience.images && experience.images.length > 0 && (
-                      <Row
-                        fillWidth
-                        paddingTop="m"
-                        gap="12"
-                        wrap
-                      >
+                      <Row fillWidth paddingTop="m" gap="12" wrap>
                         {experience.images.map((image) => (
                           <Row
                             key={image.src}

@@ -3,8 +3,8 @@
   "version": "2.3.0",
   "scripts": {
     "dev": "next dev",
-    "export": "next export",
     "build": "next build",
+    "build:pages": "set GITHUB_PAGES=true&& next build",
     "biome-write": "biome format --write .",
     "start": "next start",
     "lint": "biome check .",

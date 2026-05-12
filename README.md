@@ -1,91 +1,122 @@
-# Magic Portfolio
+# Portfolio
 
-Magic Portfolio is a simple, clean, beginner-friendly portfolio template. It supports an MDX-based content system for projects and blog posts, an about / CV page and a gallery.
+Portfolio song ngữ `vi/en` xây trên `Next.js 16` và `Once UI`, tối giản còn 3 phần chính:
 
-View the demo [here](https://demo.magic-portfolio.com).
+- `Home`
+- `About`
+- `Projects`
 
-![Magic Portfolio](public/images/og/home.jpg)
+Ngôn ngữ mặc định là tiếng Việt ở route gốc:
 
-## Getting started
+- `/`
+- `/about`
+- `/projects`
 
-**1. Clone the repository**
-```
-git clone https://github.com/once-ui-system/magic-portfolio.git
-```
+Tiếng Anh nằm dưới prefix `/en`:
 
-**2. Install dependencies**
-```
+- `/en`
+- `/en/about`
+- `/en/projects`
+
+## Stack
+
+- `Next.js 16`
+- `React 19`
+- `TypeScript`
+- `MDX` cho nội dung project
+- `Once UI`
+
+## Chạy local
+
+1. Cài dependency
+
+```bash
 npm install
 ```
 
-**3. Run dev server**
-```
+2. Chạy dev server
+
+```bash
 npm run dev
 ```
 
-**4. Edit config**
-```
-src/resources/once-ui.config.js
-```
+3. Kiểm tra trước khi push
 
-**5. Edit content**
-```
-src/resources/content.js
+```bash
+npm run typecheck
+npm run lint
+npm run build
 ```
 
-**6. Create blog posts / projects**
-```
-Add a new .mdx file to src/app/blog/posts or src/app/work/projects
-```
+## Cập nhật nội dung
 
-Magic Portfolio was built with [Once UI](https://once-ui.com) for [Next.js](https://nextjs.org). It requires Node.js v18.17+.
+- Thông tin cá nhân và nội dung song ngữ:
+  [src/resources/content.tsx](./src/resources/content.tsx)
+- Cấu hình site, `baseURL`, routes, theme:
+  [src/resources/once-ui.config.ts](./src/resources/once-ui.config.ts)
+- Dự án MDX:
+  [src/content/projects/vi](./src/content/projects/vi)
+  [src/content/projects/en](./src/content/projects/en)
+- Ảnh public:
+  [public/images](./public/images)
 
-## Documentation
+## Deploy lên GitHub Pages
 
-Docs available at: [docs.once-ui.com](https://docs.once-ui.com/docs/magic-portfolio/quick-start)
+Repo này đã được cấu hình để build static export cho GitHub Pages bằng GitHub Actions.
 
-## Features
+### 1. Kiểm tra repository settings
 
-### Once UI
-- All tokens, components & features of [Once UI](https://once-ui.com)
+Trên GitHub repo [kiera1512/portfolio](https://github.com/kiera1512/portfolio):
 
-### SEO
-- Automatic open-graph and X image generation with next/og
-- Automatic schema and metadata generation based on the content file
+1. Vào `Settings`
+2. Mở `Pages`
+3. Ở `Source`, chọn `GitHub Actions`
 
-### Design
-- Responsive layout optimized for all screen sizes
-- Timeless design without heavy animations and motion
-- Endless customization options through [data attributes](https://once-ui.com/docs/theming)
+### 2. Push code lên branch `main`
 
-### Content
-- Render sections conditionally based on the content file
-- Enable or disable pages for blog, work, gallery and about / CV
-- Generate and display social links automatically
-- Set up password protection for URLs
+Mỗi lần bạn push lên `main`, workflow này sẽ tự chạy:
 
-### Localization
-- A localized, earlier version of Magic Portfolio is available with the next-intl library
-- To use localization, switch to the 'i18n' branch
+- [.github/workflows/deploy-pages.yml](./.github/workflows/deploy-pages.yml)
 
-## Creators
+Workflow sẽ:
 
-Lorant One: [Threads](https://www.threads.net/@lorant.one) / [LinkedIn](https://www.linkedin.com/in/lorant-one/)
+- cài dependency bằng `npm ci`
+- build static export với `GITHUB_PAGES=true`
+- upload thư mục `out`
+- deploy lên GitHub Pages
 
-## Get involved
+### 3. URL deploy
 
-- Join the Design Engineers Club on [Discord](https://discord.com/invite/5EyAQ4eNdS) and share your project with us!
-- Deployed your docs? Share it on the [Once UI Hub](https://once-ui.com/hub) too! We feature our favorite apps on our landing page.
+Site sẽ được publish tại:
+
+- [https://kiera1512.github.io/portfolio](https://kiera1512.github.io/portfolio)
+
+### 4. Nếu bạn đổi tên repo
+
+Nếu repo không còn là `portfolio`, cần cập nhật 3 chỗ:
+
+1. `GITHUB_PAGES_REPO` trong
+   [deploy-pages.yml](./.github/workflows/deploy-pages.yml)
+2. `NEXT_PUBLIC_SITE_URL` trong
+   [deploy-pages.yml](./.github/workflows/deploy-pages.yml)
+3. `baseURL` fallback trong
+   [src/resources/once-ui.config.ts](./src/resources/once-ui.config.ts)
+
+## Ghi chú kỹ thuật cho GitHub Pages
+
+- GitHub Pages chỉ host static files, nên project này đã bỏ phụ thuộc runtime vào `app/api/*`.
+- `next.config.mjs` tự chuyển sang `output: "export"` khi có env `GITHUB_PAGES=true`.
+- `basePath` và `assetPrefix` được set theo tên repo để site chạy đúng dưới `/portfolio`.
+
+## Việc nên làm tiếp trước khi public
+
+- thay `hello@example.com`
+- thay social links placeholder
+- thay avatar và project thumbnails
+- rà lại `baseURL` nếu đổi domain hoặc đổi tên repo
 
 ## License
 
-Distributed under the CC BY-NC 4.0 License.
-- Attribution is required.
-- Commercial usage is not allowed.
-- You can extend the license to [Dopler CC](https://dopler.app/license) by purchasing a [Once UI Pro](https://once-ui.com/pricing) license.
+Kế thừa license từ template gốc Once UI/Magic Portfolio. Xem file:
 
-See `LICENSE.txt` for more information.
-
-## Deploy with Vercel
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fonce-ui-system%2Fmagic-portfolio&project-name=portfolio&repository-name=portfolio&redirect-url=https%3A%2F%2Fgithub.com%2Fonce-ui-system%2Fmagic-portfolio&demo-title=Magic%20Portfolio&demo-description=Showcase%20your%20designers%20or%20developer%20portfolio&demo-url=https%3A%2F%2Fdemo.magic-portfolio.com&demo-image=%2F%2Fraw.githubusercontent.com%2Fonce-ui-system%2Fmagic-portfolio%2Fmain%2Fpublic%2Fimages%2Fog%2Fhome.jpg)
+- [LICENSE](./LICENSE)

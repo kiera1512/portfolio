@@ -21,7 +21,7 @@ import { formatDate } from "@/utils/formatDate";
 import { getProjectBySlug, getProjectPosts } from "@/utils/utils";
 
 export async function getProjectMetadata(locale: Locale, slug: string): Promise<Metadata> {
-  const { work } = getContent(locale);
+  const { home, work } = getContent(locale);
   const post = getProjectBySlug(locale, slug);
 
   if (!post) {
@@ -32,7 +32,7 @@ export async function getProjectMetadata(locale: Locale, slug: string): Promise<
     title: post.metadata.title,
     description: post.metadata.summary,
     baseURL,
-    image: post.metadata.image || `/api/og/generate?title=${post.metadata.title}`,
+    image: post.metadata.image || home.image,
     path: getLocalizedPath(locale, `${work.path.replace(/^\/en/, "")}/${post.slug}`),
   });
 }
@@ -46,7 +46,7 @@ export function getProjectStaticParams(locale: Locale) {
 }
 
 export function ProjectDetailPage({ locale, slug }: { locale: Locale; slug: string }) {
-  const { about, work } = getContent(locale);
+  const { about, home, work } = getContent(locale);
   const post = getProjectBySlug(locale, slug);
 
   if (!post) {
@@ -68,9 +68,7 @@ export function ProjectDetailPage({ locale, slug }: { locale: Locale; slug: stri
         description={post.metadata.summary}
         datePublished={post.metadata.publishedAt}
         dateModified={post.metadata.publishedAt}
-        image={
-          post.metadata.image || `/api/og/generate?title=${encodeURIComponent(post.metadata.title)}`
-        }
+        image={post.metadata.image || home.image}
         author={{
           name: person.name,
           url: `${baseURL}${about.path}`,

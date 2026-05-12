@@ -1,6 +1,8 @@
 import { baseURL, getLocalizedPath, locales } from "@/resources";
 import { getProjectPosts } from "@/utils/utils";
 
+export const dynamic = "force-static";
+
 export default async function sitemap() {
   const staticPaths = ["/", "/about", "/projects"];
 

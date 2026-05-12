@@ -4,19 +4,19 @@ import { Projects } from "@/components/work/Projects";
 import { type Locale, baseURL, getContent, person } from "@/resources";
 
 export function getProjectsMetadata(locale: Locale) {
-  const { about, work } = getContent(locale);
+  const { about, home, work } = getContent(locale);
 
   return Meta.generate({
     title: work.title,
     description: work.description,
     baseURL,
-    image: `/api/og/generate?title=${encodeURIComponent(work.title)}`,
+    image: home.image,
     path: work.path,
   });
 }
 
 export function ProjectsPage({ locale }: { locale: Locale }) {
-  const { about, work } = getContent(locale);
+  const { about, home, work } = getContent(locale);
 
   return (
     <Column maxWidth="m" paddingTop="24">
@@ -26,7 +26,7 @@ export function ProjectsPage({ locale }: { locale: Locale }) {
         path={work.path}
         title={work.title}
         description={work.description}
-        image={`/api/og/generate?title=${encodeURIComponent(work.title)}`}
+        image={home.image}
         author={{
           name: person.name,
           url: `${baseURL}${about.path}`,
