@@ -1,4 +1,3 @@
-// import a pre-defined template for config and content options
 export {
   person,
   social,
@@ -8,7 +7,15 @@ export {
   blog,
   work,
   gallery,
+  defaultLocale,
+  locales,
+  getContent,
+  getLocaleFromPathname,
+  getLocalizedPath,
+  switchLocalePath,
 } from "./content";
+
+export type { Locale } from "./content";
 
 export {
   display,

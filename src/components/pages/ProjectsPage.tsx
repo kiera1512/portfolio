@@ -1,18 +1,23 @@
 import { Column, Heading, Meta, Schema } from "@once-ui-system/core";
-import { baseURL, about, person, work } from "@/resources";
-import { Projects } from "@/components/work/Projects";
 
-export async function generateMetadata() {
+import { Projects } from "@/components/work/Projects";
+import { type Locale, baseURL, getContent, person } from "@/resources";
+
+export function getProjectsMetadata(locale: Locale) {
+  const { about, work } = getContent(locale);
+
   return Meta.generate({
     title: work.title,
     description: work.description,
-    baseURL: baseURL,
+    baseURL,
     image: `/api/og/generate?title=${encodeURIComponent(work.title)}`,
     path: work.path,
   });
 }
 
-export default function Work() {
+export function ProjectsPage({ locale }: { locale: Locale }) {
+  const { about, work } = getContent(locale);
+
   return (
     <Column maxWidth="m" paddingTop="24">
       <Schema
@@ -31,7 +36,7 @@ export default function Work() {
       <Heading marginBottom="l" variant="heading-strong-xl" align="center">
         {work.title}
       </Heading>
-      <Projects />
+      <Projects locale={locale} />
     </Column>
   );
 }

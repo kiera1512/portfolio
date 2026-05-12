@@ -1,304 +1,304 @@
-import { About, Blog, Gallery, Home, Newsletter, Person, Social, Work } from "@/types";
+import type { About, Blog, Gallery, Home, Newsletter, Person, Social, Work } from "@/types";
 import { Line, Row, Text } from "@once-ui-system/core";
 
+export const locales = ["vi", "en"] as const;
+export type Locale = (typeof locales)[number];
+export const defaultLocale: Locale = "vi";
+
 const person: Person = {
-  firstName: "Selene",
-  lastName: "Yu",
-  name: `Selene Yu`,
-  role: "Design Engineer",
+  firstName: "An",
+  lastName: "Nguyen",
+  name: "An Nguyen",
+  role: "Frontend Developer",
   avatar: "/images/avatar.jpg",
-  email: "example@gmail.com",
-  location: "Asia/Jakarta", // Expecting the IANA time zone identifier, e.g., 'Europe/Vienna'
-  languages: ["English", "Bahasa"], // optional: Leave the array empty if you don't want to display languages
+  email: "hello@example.com",
+  location: "Asia/Ho_Chi_Minh",
+  locationLabel: "Ho Chi Minh City, Vietnam",
+  languages: ["Tieng Viet", "English"],
 };
 
 const newsletter: Newsletter = {
-  display: true,
-  title: <>Subscribe to {person.firstName}'s Newsletter</>,
-  description: <>My weekly newsletter about creativity and engineering</>,
+  display: false,
+  title: <>Newsletter</>,
+  description: <>Newsletter is disabled in this starter.</>,
 };
 
 const social: Social = [
-  // Links are automatically displayed.
-  // Import new icons in /once-ui/icons.ts
-  // Set essentials: true for links you want to show on the about page
-  {
-    name: "GitHub",
-    icon: "github",
-    link: "https://github.com/once-ui-system",
-    essential: true,
-  },
+  { name: "GitHub", icon: "github", link: "https://github.com/your-handle", essential: true },
   {
     name: "LinkedIn",
     icon: "linkedin",
-    link: "https://www.linkedin.com/company/once-ui/",
+    link: "https://www.linkedin.com/in/your-handle/",
     essential: true,
   },
-  {
-    name: "Instagram",
-    icon: "instagram",
-    link: "https://www.instagram.com/once_ui/",
-    essential: false,
-  },
-  {
-    name: "Threads",
-    icon: "threads",
-    link: "https://www.threads.com/@once_ui",
-    essential: true,
-  },
-  {
-    name: "Email",
-    icon: "email",
-    link: `mailto:${person.email}`,
-    essential: true,
-  },
+  { name: "Email", icon: "email", link: `mailto:${person.email}`, essential: true },
 ];
 
-const home: Home = {
-  path: "/",
-  image: "/images/og/home.jpg",
-  label: "Home",
-  title: `${person.name}'s Portfolio`,
-  description: `Portfolio website showcasing my work as a ${person.role}`,
-  headline: <>Building bridges between design and code</>,
-  featured: {
-    display: true,
-    title: (
-      <Row gap="12" vertical="center">
-        <strong className="ml-4">Once UI</strong>{" "}
-        <Line background="brand-alpha-strong" vert height="20" />
-        <Text marginRight="4" onBackground="brand-medium">
-          Featured work
-        </Text>
-      </Row>
-    ),
-    href: "/work/building-once-ui-a-customizable-design-system",
-  },
-  subline: (
-    <>
-    I'm Selene, a design engineer at <Text as="span" size="xl" weight="strong">ONCE UI</Text>, where I craft intuitive <br /> user experiences. After hours, I build my own projects.
-</>
-  ),
+export function getLocalizedPath(locale: Locale, path: string) {
+  const normalizedPath = path === "/" ? "" : path;
+  if (locale === defaultLocale) {
+    return normalizedPath || "/";
+  }
+
+  return `/en${normalizedPath}`;
+}
+
+export function getLocaleFromPathname(pathname: string): Locale {
+  return pathname === "/en" || pathname.startsWith("/en/") ? "en" : defaultLocale;
+}
+
+export function switchLocalePath(pathname: string, targetLocale: Locale) {
+  const normalizedPath = pathname.startsWith("/en")
+    ? pathname.replace(/^\/en/, "") || "/"
+    : pathname;
+  return getLocalizedPath(targetLocale, normalizedPath);
+}
+
+type LocalizedContent = {
+  home: Home;
+  about: About;
+  work: Work;
 };
 
-const about: About = {
-  path: "/about",
-  label: "About",
-  title: `About – ${person.name}`,
-  description: `Meet ${person.name}, ${person.role} from ${person.location}`,
-  tableOfContent: {
-    display: true,
-    subItems: false,
-  },
-  avatar: {
-    display: true,
-  },
-  calendar: {
-    display: true,
-    link: "https://cal.com",
-  },
-  intro: {
-    display: true,
-    title: "Introduction",
-    description: (
-      <>
-        Selene is a Jakarta-based design engineer with a passion for transforming complex challenges
-        into simple, elegant design solutions. Her work spans digital interfaces, interactive
-        experiences, and the convergence of design and technology.
-      </>
-    ),
-  },
-  work: {
-    display: true, // set to false to hide this section
-    title: "Work Experience",
-    experiences: [
-      {
-        company: "FLY",
-        timeframe: "2022 - Present",
-        role: "Senior Design Engineer",
-        achievements: [
-          <>
-            Redesigned the UI/UX for the FLY platform, resulting in a 20% increase in user
-            engagement and 30% faster load times.
-          </>,
-          <>
-            Spearheaded the integration of AI tools into design workflows, enabling designers to
-            iterate 50% faster.
-          </>,
-        ],
-        images: [
-          // optional: leave the array empty if you don't want to display images
-          {
-            src: "/images/projects/project-01/cover-01.jpg",
-            alt: "Once UI Project",
-            width: 16,
-            height: 9,
-          },
-        ],
-      },
-      {
-        company: "Creativ3",
-        timeframe: "2018 - 2022",
-        role: "Lead Designer",
-        achievements: [
-          <>
-            Developed a design system that unified the brand across multiple platforms, improving
-            design consistency by 40%.
-          </>,
-          <>
-            Led a cross-functional team to launch a new product line, contributing to a 15% increase
-            in overall company revenue.
-          </>,
-        ],
-        images: [],
-      },
-    ],
-  },
-  studies: {
-    display: true, // set to false to hide this section
-    title: "Studies",
-    institutions: [
-      {
-        name: "University of Jakarta",
-        description: <>Studied software engineering.</>,
-      },
-      {
-        name: "Build the Future",
-        description: <>Studied online marketing and personal branding.</>,
-      },
-    ],
-  },
-  technical: {
-    display: true, // set to false to hide this section
-    title: "Technical skills",
-    skills: [
-      {
-        title: "Figma",
-        description: (
-          <>Able to prototype in Figma with Once UI with unnatural speed.</>
+function createContent(locale: Locale): LocalizedContent {
+  const isVietnamese = locale === "vi";
+  const projectsPath = "/projects";
+
+  return {
+    home: {
+      path: getLocalizedPath(locale, "/"),
+      image: "/images/og/home.jpg",
+      label: isVietnamese ? "Trang chu" : "Home",
+      title: isVietnamese ? `Portfolio cua ${person.name}` : `${person.name} Portfolio`,
+      description: isVietnamese
+        ? `Portfolio gioi thieu du an, kinh nghiem va cach ${person.name} xay dung san pham web.`
+        : `Portfolio showcasing ${person.name}'s projects, experience, and product thinking.`,
+      headline: isVietnamese ? (
+        <>Thiet ke trai nghiem ro rang, roi bien no thanh san pham chay tot</>
+      ) : (
+        <>Design clear experiences, then turn them into reliable products</>
+      ),
+      featured: {
+        display: true,
+        title: (
+          <Row gap="12" vertical="center">
+            <strong>Featured</strong>
+            <Line background="brand-alpha-strong" vert height="20" />
+            <Text onBackground="brand-medium">
+              {isVietnamese ? "Case study noi bat" : "Featured case study"}
+            </Text>
+          </Row>
         ),
-        tags: [
-          {
-            name: "Figma",
-            icon: "figma",
-          },
-        ],
-        // optional: leave the array empty if you don't want to display images
-        images: [
-          {
-            src: "/images/projects/project-01/cover-02.jpg",
-            alt: "Project image",
-            width: 16,
-            height: 9,
-          },
-          {
-            src: "/images/projects/project-01/cover-03.jpg",
-            alt: "Project image",
-            width: 16,
-            height: 9,
-          },
-        ],
+        href: getLocalizedPath(locale, `${projectsPath}/ops-dashboard-revamp`),
       },
-      {
-        title: "Next.js",
-        description: (
-          <>Building next gen apps with Next.js + Once UI + Supabase.</>
+      subline: isVietnamese ? (
+        <>
+          Toi tap trung vao{" "}
+          <Text as="span" size="xl" weight="strong">
+            Next.js
+          </Text>
+          , thiet ke he thong giao dien, va cac luong noi dung giup team ship nhanh hon ma van giu
+          chat luong.
+        </>
+      ) : (
+        <>
+          I focus on{" "}
+          <Text as="span" size="xl" weight="strong">
+            Next.js
+          </Text>
+          , design systems, and content workflows that help teams ship faster without losing
+          quality.
+        </>
+      ),
+    },
+    about: {
+      path: getLocalizedPath(locale, "/about"),
+      label: isVietnamese ? "Gioi thieu" : "About",
+      title: isVietnamese ? `Gioi thieu - ${person.name}` : `About - ${person.name}`,
+      description: isVietnamese
+        ? `Tim hieu ve ${person.name}, ${person.role} tai ${person.locationLabel}.`
+        : `Learn more about ${person.name}, a ${person.role} based in ${person.locationLabel}.`,
+      tableOfContent: {
+        display: true,
+        subItems: false,
+      },
+      avatar: {
+        display: true,
+      },
+      calendar: {
+        display: false,
+        link: "https://cal.com",
+      },
+      intro: {
+        display: true,
+        title: isVietnamese ? "Tong quan" : "Overview",
+        description: isVietnamese ? (
+          <>
+            Toi xay dung website va san pham noi bo voi uu tien cao cho toc do, kha nang bao tri va
+            trai nghiem nguoi dung ro rang. Toi lam tot o phan giao giua UI, noi dung va logic trien
+            khai.
+          </>
+        ) : (
+          <>
+            I build websites and internal products with a strong focus on speed, maintainability,
+            and clear user experience. My best work sits at the intersection of UI, content, and
+            implementation detail.
+          </>
         ),
-        tags: [
+      },
+      work: {
+        display: true,
+        title: isVietnamese ? "Kinh nghiem" : "Experience",
+        experiences: [
           {
-            name: "JavaScript",
-            icon: "javascript",
+            company: "Studio Product Team",
+            timeframe: isVietnamese ? "2023 - nay" : "2023 - Present",
+            role: "Frontend Developer",
+            achievements: isVietnamese
+              ? [
+                  "Xay dung lai dashboard noi bo tren Next.js, giam dang ke thoi gian thao tac cua team van hanh.",
+                  "Chuan hoa component va layout de cac tinh nang moi trien khai nhat quan hon.",
+                ]
+              : [
+                  "Rebuilt an internal dashboard in Next.js and cut down daily friction for the operations team.",
+                  "Standardized components and layout patterns so new features shipped more consistently.",
+                ],
+            images: [
+              {
+                src: "/images/projects/project-01/cover-01.jpg",
+                alt: "Dashboard preview",
+                width: 16,
+                height: 9,
+              },
+            ],
           },
           {
-            name: "Next.js",
-            icon: "nextjs",
-          },
-          {
-            name: "Supabase",
-            icon: "supabase",
-          },
-        ],
-        // optional: leave the array empty if you don't want to display images
-        images: [
-          {
-            src: "/images/projects/project-01/cover-04.jpg",
-            alt: "Project image",
-            width: 16,
-            height: 9,
+            company: "Freelance",
+            timeframe: "2021 - 2023",
+            role: "Web Developer",
+            achievements: isVietnamese
+              ? [
+                  "Thiet ke va phat trien landing page, website dich vu va portfolio cho khach hang nho.",
+                  "Thiet lap quy trinh ban giao noi dung va tai nguyen de khach hang tu cap nhat de hon.",
+                ]
+              : [
+                  "Designed and developed landing pages, service websites, and portfolios for small clients.",
+                  "Set up content and asset handoff workflows so clients could update sites more easily.",
+                ],
+            images: [],
           },
         ],
       },
-    ],
-  },
-};
+      studies: {
+        display: true,
+        title: isVietnamese ? "Hoc tap" : "Education",
+        institutions: [
+          {
+            name: isVietnamese ? "Cong nghe phan mem" : "Software Engineering",
+            description: isVietnamese ? (
+              <>Nen tang ve kien truc web, phat trien frontend va lam viec theo san pham.</>
+            ) : (
+              <>
+                Foundation in web architecture, frontend development, and product-focused delivery.
+              </>
+            ),
+          },
+        ],
+      },
+      technical: {
+        display: true,
+        title: isVietnamese ? "Ky nang ky thuat" : "Technical skills",
+        skills: [
+          {
+            title: "Next.js",
+            description: isVietnamese ? (
+              <>
+                Xay dung App Router, metadata, MDX content flow va trien khai production tren
+                Vercel.
+              </>
+            ) : (
+              <>
+                Building with App Router, metadata, MDX content flows, and production deployment on
+                Vercel.
+              </>
+            ),
+            tags: [
+              { name: "Next.js", icon: "nextjs" },
+              { name: "TypeScript", icon: "typescript" },
+              { name: "Vercel", icon: "vercel" },
+            ],
+            images: [
+              {
+                src: "/images/projects/project-01/cover-04.jpg",
+                alt: "Next.js project",
+                width: 16,
+                height: 9,
+              },
+            ],
+          },
+          {
+            title: isVietnamese ? "Design system" : "Design systems",
+            description: isVietnamese ? (
+              <>Thiet ke token, component reusable va document pattern de giu UI nhat quan.</>
+            ) : (
+              <>
+                Designing tokens, reusable components, and documented patterns to keep UI
+                consistent.
+              </>
+            ),
+            tags: [
+              { name: "Figma", icon: "figma" },
+              { name: "SCSS", icon: "sass" },
+            ],
+            images: [
+              {
+                src: "/images/projects/project-01/cover-02.jpg",
+                alt: "Design system work",
+                width: 16,
+                height: 9,
+              },
+            ],
+          },
+        ],
+      },
+    },
+    work: {
+      path: getLocalizedPath(locale, projectsPath),
+      label: isVietnamese ? "Du an" : "Projects",
+      title: isVietnamese ? `Du an - ${person.name}` : `Projects - ${person.name}`,
+      description: isVietnamese
+        ? `Mot so du an tieu bieu ve frontend, design system va toi uu luong noi dung cua ${person.name}.`
+        : `Selected frontend, design system, and content workflow projects by ${person.name}.`,
+    },
+  };
+}
+
+const localizedContent = {
+  vi: createContent("vi"),
+  en: createContent("en"),
+} satisfies Record<Locale, LocalizedContent>;
+
+const home = localizedContent.vi.home;
+const about = localizedContent.vi.about;
+const work = localizedContent.vi.work;
 
 const blog: Blog = {
   path: "/blog",
   label: "Blog",
-  title: "Writing about design and tech...",
-  description: `Read what ${person.name} has been up to recently`,
-  // Create new blog posts by adding a new .mdx file to app/blog/posts
-  // All posts will be listed on the /blog route
-};
-
-const work: Work = {
-  path: "/work",
-  label: "Work",
-  title: `Projects – ${person.name}`,
-  description: `Design and dev projects by ${person.name}`,
-  // Create new project pages by adding a new .mdx file to app/blog/posts
-  // All projects will be listed on the /home and /work routes
+  title: "Blog",
+  description: "Blog is disabled in this starter.",
 };
 
 const gallery: Gallery = {
   path: "/gallery",
   label: "Gallery",
-  title: `Photo gallery – ${person.name}`,
-  description: `A photo collection by ${person.name}`,
-  // Images by https://lorant.one
-  // These are placeholder images, replace with your own
-  images: [
-    {
-      src: "/images/gallery/horizontal-1.jpg",
-      alt: "image",
-      orientation: "horizontal",
-    },
-    {
-      src: "/images/gallery/vertical-4.jpg",
-      alt: "image",
-      orientation: "vertical",
-    },
-    {
-      src: "/images/gallery/horizontal-3.jpg",
-      alt: "image",
-      orientation: "horizontal",
-    },
-    {
-      src: "/images/gallery/vertical-1.jpg",
-      alt: "image",
-      orientation: "vertical",
-    },
-    {
-      src: "/images/gallery/vertical-2.jpg",
-      alt: "image",
-      orientation: "vertical",
-    },
-    {
-      src: "/images/gallery/horizontal-2.jpg",
-      alt: "image",
-      orientation: "horizontal",
-    },
-    {
-      src: "/images/gallery/horizontal-4.jpg",
-      alt: "image",
-      orientation: "horizontal",
-    },
-    {
-      src: "/images/gallery/vertical-3.jpg",
-      alt: "image",
-      orientation: "vertical",
-    },
-  ],
+  title: "Gallery",
+  description: "Gallery is disabled in this starter.",
+  images: [],
 };
 
-export { person, social, newsletter, home, about, blog, work, gallery };
+export function getContent(locale: Locale) {
+  return localizedContent[locale];
+}
+
+export { about, blog, gallery, home, newsletter, person, social, work };

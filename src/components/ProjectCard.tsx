@@ -12,6 +12,7 @@ import {
 
 interface ProjectCardProps {
   href: string;
+  locale: "vi" | "en";
   priority?: boolean;
   images: string[];
   title: string;
@@ -23,6 +24,7 @@ interface ProjectCardProps {
 
 export const ProjectCard: React.FC<ProjectCardProps> = ({
   href,
+  locale,
   images = [],
   title,
   content,
@@ -69,7 +71,9 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                   style={{ margin: "0", width: "fit-content" }}
                   href={href}
                 >
-                  <Text variant="body-default-s">Read case study</Text>
+                  <Text variant="body-default-s">
+                    {locale === "vi" ? "Xem case study" : "Read case study"}
+                  </Text>
                 </SmartLink>
               )}
               {link && (
@@ -78,7 +82,9 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
                   style={{ margin: "0", width: "fit-content" }}
                   href={link}
                 >
-                  <Text variant="body-default-s">View project</Text>
+                  <Text variant="body-default-s">
+                    {locale === "vi" ? "Mở dự án" : "View project"}
+                  </Text>
                 </SmartLink>
               )}
             </Flex>

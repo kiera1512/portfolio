@@ -5,13 +5,22 @@ import { useEffect, useState } from "react";
 
 import { Fade, Flex, Line, Row, ToggleButton } from "@once-ui-system/core";
 
-import { routes, display, person, about, blog, work, gallery } from "@/resources";
-import { ThemeToggle } from "./ThemeToggle";
+import {
+  about,
+  display,
+  getContent,
+  getLocaleFromPathname,
+  person,
+  routes,
+  switchLocalePath,
+  work,
+} from "@/resources";
 import styles from "./Header.module.scss";
+import { ThemeToggle } from "./ThemeToggle";
 
 type TimeDisplayProps = {
   timeZone: string;
-  locale?: string; // Optionally allow locale, defaulting to 'en-GB'
+  locale?: string;
 };
 
 const TimeDisplay: React.FC<TimeDisplayProps> = ({ timeZone, locale = "en-GB" }) => {
@@ -40,10 +49,10 @@ const TimeDisplay: React.FC<TimeDisplayProps> = ({ timeZone, locale = "en-GB" })
   return <>{currentTime}</>;
 };
 
-export default TimeDisplay;
-
 export const Header = () => {
-  const pathname = usePathname() ?? "";
+  const pathname = usePathname() ?? "/";
+  const locale = getLocaleFromPathname(pathname);
+  const localized = getContent(locale);
 
   return (
     <>
@@ -73,7 +82,9 @@ export const Header = () => {
         }}
       >
         <Row paddingLeft="12" fillWidth vertical="center" textVariant="body-default-s">
-          {display.location && <Row s={{ hide: true }}>{person.location}</Row>}
+          {display.location && (
+            <Row s={{ hide: true }}>{person.locationLabel ?? person.location}</Row>
+          )}
         </Row>
         <Row fillWidth horizontal="center">
           <Row
@@ -87,85 +98,68 @@ export const Header = () => {
           >
             <Row gap="4" vertical="center" textVariant="body-default-s" suppressHydrationWarning>
               {routes["/"] && (
-                <ToggleButton prefixIcon="home" href="/" selected={pathname === "/"} />
+                <ToggleButton
+                  prefixIcon="home"
+                  href={localized.home.path}
+                  selected={pathname === localized.home.path}
+                />
               )}
               <Line background="neutral-alpha-medium" vert maxHeight="24" />
-              {routes["/about"] && (
+              {routes[about.path as keyof typeof routes] && (
                 <>
                   <Row s={{ hide: true }}>
                     <ToggleButton
                       prefixIcon="person"
-                      href="/about"
-                      label={about.label}
-                      selected={pathname === "/about"}
+                      href={localized.about.path}
+                      label={localized.about.label}
+                      selected={pathname === localized.about.path}
                     />
                   </Row>
                   <Row hide s={{ hide: false }}>
                     <ToggleButton
                       prefixIcon="person"
-                      href="/about"
-                      selected={pathname === "/about"}
+                      href={localized.about.path}
+                      selected={pathname === localized.about.path}
                     />
                   </Row>
                 </>
               )}
-              {routes["/work"] && (
+              {routes[work.path as keyof typeof routes] && (
                 <>
                   <Row s={{ hide: true }}>
                     <ToggleButton
                       prefixIcon="grid"
-                      href="/work"
-                      label={work.label}
-                      selected={pathname.startsWith("/work")}
+                      href={localized.work.path}
+                      label={localized.work.label}
+                      selected={
+                        pathname === localized.work.path ||
+                        pathname.startsWith(`${localized.work.path}/`)
+                      }
                     />
                   </Row>
                   <Row hide s={{ hide: false }}>
                     <ToggleButton
                       prefixIcon="grid"
-                      href="/work"
-                      selected={pathname.startsWith("/work")}
+                      href={localized.work.path}
+                      selected={
+                        pathname === localized.work.path ||
+                        pathname.startsWith(`${localized.work.path}/`)
+                      }
                     />
                   </Row>
                 </>
               )}
-              {routes["/blog"] && (
-                <>
-                  <Row s={{ hide: true }}>
-                    <ToggleButton
-                      prefixIcon="book"
-                      href="/blog"
-                      label={blog.label}
-                      selected={pathname.startsWith("/blog")}
-                    />
-                  </Row>
-                  <Row hide s={{ hide: false }}>
-                    <ToggleButton
-                      prefixIcon="book"
-                      href="/blog"
-                      selected={pathname.startsWith("/blog")}
-                    />
-                  </Row>
-                </>
-              )}
-              {routes["/gallery"] && (
-                <>
-                  <Row s={{ hide: true }}>
-                    <ToggleButton
-                      prefixIcon="gallery"
-                      href="/gallery"
-                      label={gallery.label}
-                      selected={pathname.startsWith("/gallery")}
-                    />
-                  </Row>
-                  <Row hide s={{ hide: false }}>
-                    <ToggleButton
-                      prefixIcon="gallery"
-                      href="/gallery"
-                      selected={pathname.startsWith("/gallery")}
-                    />
-                  </Row>
-                </>
-              )}
+              <Line background="neutral-alpha-medium" vert maxHeight="24" />
+              <ToggleButton
+                href={switchLocalePath(pathname, "vi")}
+                label="VI"
+                selected={locale === "vi"}
+              />
+              <ToggleButton
+                href={switchLocalePath(pathname, "en")}
+                label="EN"
+                selected={locale === "en"}
+              />
               {display.themeSwitcher && (
                 <>
                   <Line background="neutral-alpha-medium" vert maxHeight="24" />
@@ -184,7 +178,12 @@ export const Header = () => {
             gap="20"
           >
             <Flex s={{ hide: true }}>
-              {display.time && <TimeDisplay timeZone={person.location} />}
+              {display.time && (
+                <TimeDisplay
+                  timeZone={person.location}
+                  locale={locale === "vi" ? "vi-VN" : "en-GB"}
+                />
+              )}
             </Flex>
           </Flex>
         </Flex>

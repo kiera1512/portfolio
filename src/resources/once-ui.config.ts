@@ -1,4 +1,4 @@
-import {
+import type {
   DataStyleConfig,
   DisplayConfig,
   EffectsConfig,
@@ -11,17 +11,19 @@ import {
   SocialSharingConfig,
   StyleConfig,
 } from "@/types";
-import { home } from "./index";
+import type { NextFontWithVariable } from "next/dist/compiled/@next/font";
 
-// IMPORTANT: Replace with your own domain address - it's used for SEO in meta tags and schema
-const baseURL: string = "https://demo.magic-portfolio.com";
+import { home, person } from "./content";
+
+const baseURL = "https://demo.magic-portfolio.com";
 
 const routes: RoutesConfig = {
   "/": true,
   "/about": true,
-  "/work": true,
-  "/blog": true,
-  "/gallery": true,
+  "/projects": true,
+  "/en": true,
+  "/en/about": true,
+  "/en/projects": true,
 };
 
 const display: DisplayConfig = {
@@ -30,65 +32,41 @@ const display: DisplayConfig = {
   themeSwitcher: true,
 };
 
-// Enable password protection on selected routes
-// Set password in the .env file, refer to .env.example
 const protectedRoutes: ProtectedRoutesConfig = {
-  "/work/automate-design-handovers-with-a-figma-to-code-pipeline": true,
+  "/password-protected-demo": false,
 };
 
-// Import and set font for each variant
-import { Geist } from "next/font/google";
-import { Geist_Mono } from "next/font/google";
-
-const heading = Geist({
-  variable: "--font-heading",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const body = Geist({
-  variable: "--font-body",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const label = Geist({
-  variable: "--font-label",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-const code = Geist_Mono({
-  variable: "--font-code",
-  subsets: ["latin"],
-  display: "swap",
-});
+const createFont = (variable: string) =>
+  ({
+    className: "",
+    style: { fontFamily: "system-ui, sans-serif" },
+    variable,
+  }) as unknown as NextFontWithVariable;
 
 const fonts: FontsConfig = {
-  heading: heading,
-  body: body,
-  label: label,
-  code: code,
+  heading: createFont("--font-heading"),
+  body: createFont("--font-body"),
+  label: createFont("--font-label"),
+  code: createFont("--font-code"),
 };
 
-// default customization applied to the HTML in the main layout.tsx
 const style: StyleConfig = {
-  theme: "system", // dark | light | system
-  neutral: "gray", // sand | gray | slate | mint | rose | dusk | custom
-  brand: "cyan", // blue | indigo | violet | magenta | pink | red | orange | yellow | moss | green | emerald | aqua | cyan | custom
-  accent: "red", // blue | indigo | violet | magenta | pink | red | orange | yellow | moss | green | emerald | aqua | cyan | custom
-  solid: "contrast", // color | contrast
-  solidStyle: "flat", // flat | plastic
-  border: "playful", // rounded | playful | conservative | sharp
-  surface: "translucent", // filled | translucent
-  transition: "all", // all | micro | macro
-  scaling: "100", // 90 | 95 | 100 | 105 | 110
+  theme: "system",
+  neutral: "gray",
+  brand: "cyan",
+  accent: "red",
+  solid: "contrast",
+  solidStyle: "flat",
+  border: "playful",
+  surface: "translucent",
+  transition: "all",
+  scaling: "100",
 };
 
 const dataStyle: DataStyleConfig = {
-  variant: "gradient", // flat | gradient | outline
-  mode: "categorical", // categorical | divergent | sequential
-  height: 24, // default chart height
+  variant: "gradient",
+  mode: "categorical",
+  height: 24,
   axis: {
     stroke: "var(--neutral-alpha-weak)",
   },
@@ -184,23 +162,20 @@ const mailchimp: MailchimpConfig = {
   },
 };
 
-// default schema data
 const schema: SchemaConfig = {
   logo: "",
-  type: "Organization",
-  name: "Once UI",
+  type: "Person",
+  name: person.name,
   description: home.description,
-  email: "lorant@once-ui.com",
+  email: person.email,
 };
 
-// social links
 const sameAs: SameAsConfig = {
-  threads: "https://www.threads.com/@once_ui",
-  linkedin: "https://www.linkedin.com/company/once-ui/",
-  discord: "https://discord.com/invite/5EyAQ4eNdS",
+  threads: "",
+  linkedin: "https://www.linkedin.com/in/your-handle/",
+  discord: "",
 };
 
-// social sharing configuration for blog posts
 const socialSharing: SocialSharingConfig = {
   display: true,
   platforms: {
@@ -217,16 +192,16 @@ const socialSharing: SocialSharingConfig = {
 };
 
 export {
-  display,
-  mailchimp,
-  routes,
-  protectedRoutes,
   baseURL,
-  fonts,
-  style,
-  schema,
-  sameAs,
-  socialSharing,
-  effects,
   dataStyle,
+  display,
+  effects,
+  fonts,
+  mailchimp,
+  protectedRoutes,
+  routes,
+  sameAs,
+  schema,
+  socialSharing,
+  style,
 };

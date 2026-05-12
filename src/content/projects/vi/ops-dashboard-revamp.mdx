@@ -1,0 +1,32 @@
+---
+title: "Revamp dashboard vận hành"
+publishedAt: "2025-02-14"
+summary: "Thiết kế lại dashboard nội bộ để rút ngắn thời gian kiểm tra trạng thái đơn hàng và xử lý bất thường."
+image: "/images/projects/project-01/cover-01.jpg"
+images:
+  - "/images/projects/project-01/cover-01.jpg"
+  - "/images/projects/project-01/cover-02.jpg"
+tag: "Next.js"
+team:
+  - name: "An Nguyen"
+    role: "Frontend Developer"
+    avatar: "/images/projects/project-01/avatar-01.jpg"
+    linkedIn: "https://www.linkedin.com/in/your-handle/"
+link: "https://example.com"
+---
+
+## Bối cảnh
+
+Team vận hành phải đi qua nhiều màn hình để kiểm tra tình trạng đơn hàng, trạng thái đồng bộ và lỗi thanh toán. Mục tiêu của bản revamp là gom các thông tin quan trọng về một luồng duy nhất.
+
+## Phần tôi thực hiện
+
+- Xây dựng lại layout tổng thể bằng Next.js App Router.
+- Chuẩn hóa pattern filter, table, trạng thái loading và empty state.
+- Tách component reusable để team có thể thêm module mới mà không lặp lại UI.
+
+## Kết quả
+
+- Luồng kiểm tra nhanh hơn vì các chỉ số chính nằm trong cùng một trang.
+- Giảm số bước thao tác cho các tác vụ lặp lại hằng ngày.
+- Codebase dễ mở rộng hơn nhờ dùng chung token và component.

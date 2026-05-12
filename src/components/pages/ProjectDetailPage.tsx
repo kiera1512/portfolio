@@ -1,76 +1,61 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getPosts } from "@/utils/utils";
-import {
-  Meta,
-  Schema,
-  AvatarGroup,
-  Button,
-  Column,
-  Flex,
-  Heading,
-  Media,
-  Text,
-  SmartLink,
-  Row,
-  Avatar,
-  Line,
-} from "@once-ui-system/core";
-import { baseURL, about, person, work } from "@/resources";
-import { formatDate } from "@/utils/formatDate";
-import { ScrollToHash, CustomMDX } from "@/components";
-import { Metadata } from "next";
-import { Projects } from "@/components/work/Projects";
 
-export async function generateStaticParams(): Promise<{ slug: string }[]> {
-  const posts = getPosts(["src", "app", "work", "projects"]);
+import {
+  AvatarGroup,
+  Column,
+  Heading,
+  Line,
+  Media,
+  Meta,
+  Row,
+  Schema,
+  SmartLink,
+  Text,
+} from "@once-ui-system/core";
+
+import { CustomMDX, ScrollToHash } from "@/components";
+import { Projects } from "@/components/work/Projects";
+import { type Locale, baseURL, getContent, getLocalizedPath, person } from "@/resources";
+import { formatDate } from "@/utils/formatDate";
+import { getProjectBySlug, getProjectPosts } from "@/utils/utils";
+
+export async function getProjectMetadata(locale: Locale, slug: string): Promise<Metadata> {
+  const { work } = getContent(locale);
+  const post = getProjectBySlug(locale, slug);
+
+  if (!post) {
+    return {};
+  }
+
+  return Meta.generate({
+    title: post.metadata.title,
+    description: post.metadata.summary,
+    baseURL,
+    image: post.metadata.image || `/api/og/generate?title=${post.metadata.title}`,
+    path: getLocalizedPath(locale, `${work.path.replace(/^\/en/, "")}/${post.slug}`),
+  });
+}
+
+export function getProjectStaticParams(locale: Locale) {
+  const posts = getProjectPosts(locale);
+
   return posts.map((post) => ({
     slug: post.slug,
   }));
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string | string[] }>;
-}): Promise<Metadata> {
-  const routeParams = await params;
-  const slugPath = Array.isArray(routeParams.slug)
-    ? routeParams.slug.join("/")
-    : routeParams.slug || "";
-
-  const posts = getPosts(["src", "app", "work", "projects"]);
-  let post = posts.find((post) => post.slug === slugPath);
-
-  if (!post) return {};
-
-  return Meta.generate({
-    title: post.metadata.title,
-    description: post.metadata.summary,
-    baseURL: baseURL,
-    image: post.metadata.image || `/api/og/generate?title=${post.metadata.title}`,
-    path: `${work.path}/${post.slug}`,
-  });
-}
-
-export default async function Project({
-  params,
-}: {
-  params: Promise<{ slug: string | string[] }>;
-}) {
-  const routeParams = await params;
-  const slugPath = Array.isArray(routeParams.slug)
-    ? routeParams.slug.join("/")
-    : routeParams.slug || "";
-
-  let post = getPosts(["src", "app", "work", "projects"]).find((post) => post.slug === slugPath);
+export function ProjectDetailPage({ locale, slug }: { locale: Locale; slug: string }) {
+  const { about, work } = getContent(locale);
+  const post = getProjectBySlug(locale, slug);
 
   if (!post) {
     notFound();
   }
 
   const avatars =
-    post.metadata.team?.map((person) => ({
-      src: person.avatar,
+    post.metadata.team?.map((member) => ({
+      src: member.avatar,
     })) || [];
 
   return (
@@ -78,7 +63,7 @@ export default async function Project({
       <Schema
         as="blogPosting"
         baseURL={baseURL}
-        path={`${work.path}/${post.slug}`}
+        path={getLocalizedPath(locale, `/projects/${post.slug}`)}
         title={post.metadata.title}
         description={post.metadata.summary}
         datePublished={post.metadata.publishedAt}
@@ -93,8 +78,8 @@ export default async function Project({
         }}
       />
       <Column maxWidth="s" gap="16" horizontal="center" align="center">
-        <SmartLink href="/work">
-          <Text variant="label-strong-m">Projects</Text>
+        <SmartLink href={work.path}>
+          <Text variant="label-strong-m">{work.label}</Text>
         </SmartLink>
         <Text variant="body-default-xs" onBackground="neutral-weak" marginBottom="12">
           {post.metadata.publishedAt && formatDate(post.metadata.publishedAt)}
@@ -106,7 +91,7 @@ export default async function Project({
           {post.metadata.team && <AvatarGroup reverse avatars={avatars} size="s" />}
           <Text variant="label-default-m" onBackground="brand-weak">
             {post.metadata.team?.map((member, idx) => (
-              <span key={idx}>
+              <span key={member.name}>
                 {idx > 0 && (
                   <Text as="span" onBackground="neutral-weak">
                     ,{" "}
@@ -127,9 +112,9 @@ export default async function Project({
       <Column fillWidth gap="40" horizontal="center" marginTop="40">
         <Line maxWidth="40" />
         <Heading as="h2" variant="heading-strong-xl" marginBottom="24">
-          Related projects
+          {locale === "vi" ? "Dự án liên quan" : "Related projects"}
         </Heading>
-        <Projects exclude={[post.slug]} range={[2]} />
+        <Projects locale={locale} exclude={[post.slug]} range={[1, 2]} />
       </Column>
       <ScrollToHash />
     </Column>
