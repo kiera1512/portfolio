@@ -19,7 +19,7 @@ export function ProjectsPage({ locale }: { locale: Locale }) {
   const { about, home, work } = getContent(locale);
 
   return (
-    <Column maxWidth="m" paddingTop="24">
+    <Column fillWidth paddingTop="24" style={{ maxWidth: "1400px" }}>
       <Schema
         as="webPage"
         baseURL={baseURL}

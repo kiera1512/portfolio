@@ -30,7 +30,7 @@ export function HomePage({ locale }: { locale: Locale }) {
   const { home, about: localizedAbout } = getContent(locale);
 
   return (
-    <Column maxWidth="m" gap="xl" paddingY="12" horizontal="center">
+    <Column fillWidth gap="xl" paddingY="12" horizontal="center" style={{ maxWidth: "1400px" }}>
       <Schema
         as="webPage"
         baseURL={baseURL}
@@ -45,7 +45,7 @@ export function HomePage({ locale }: { locale: Locale }) {
         }}
       />
       <Column fillWidth horizontal="center" gap="m">
-        <Column maxWidth="s" horizontal="center" align="center">
+        <Column horizontal="center" align="center" style={{ width: "100%", maxWidth: "920px" }}>
           {home.featured.display && (
             <RevealFx
               fillWidth

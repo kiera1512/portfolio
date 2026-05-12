@@ -53,7 +53,7 @@ export function AboutPage({ locale }: { locale: Locale }) {
   ];
 
   return (
-    <Column maxWidth="m">
+    <Column fillWidth style={{ maxWidth: "1400px" }}>
       <Schema
         as="webPage"
         baseURL={baseURL}
@@ -113,7 +113,11 @@ export function AboutPage({ locale }: { locale: Locale }) {
             )}
           </Column>
         )}
-        <Column className={styles.blockAlign} flex={9} maxWidth={40} style={{ minWidth: 0 }}>
+        <Column
+          className={styles.blockAlign}
+          flex={9}
+          style={{ minWidth: 0, width: "100%", maxWidth: "920px" }}
+        >
           <Column
             id={about.intro.title}
             fillWidth

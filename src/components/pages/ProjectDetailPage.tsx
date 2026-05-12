@@ -66,7 +66,7 @@ export function ProjectDetailPage({ locale, slug }: { locale: Locale; slug: stri
     })) || [];
 
   return (
-    <Column as="section" maxWidth="m" horizontal="center" gap="l">
+    <Column as="section" fillWidth horizontal="center" gap="l" style={{ maxWidth: "1400px" }}>
       <Schema
         as="blogPosting"
         baseURL={baseURL}
@@ -82,7 +82,12 @@ export function ProjectDetailPage({ locale, slug }: { locale: Locale; slug: stri
           image: `${baseURL}${person.avatar}`,
         }}
       />
-      <Column maxWidth="s" gap="16" horizontal="center" align="center">
+      <Column
+        gap="16"
+        horizontal="center"
+        align="center"
+        style={{ width: "100%", maxWidth: "920px" }}
+      >
         <SmartLink href={work.path}>
           <Text variant="label-strong-m">{work.label}</Text>
         </SmartLink>
@@ -117,7 +122,7 @@ export function ProjectDetailPage({ locale, slug }: { locale: Locale; slug: stri
           src={getAssetPath(post.metadata.images[0])}
         />
       )}
-      <Column style={{ margin: "auto" }} as="article" maxWidth="xs">
+      <Column style={{ margin: "auto", width: "100%", maxWidth: "720px" }} as="article">
         <CustomMDX source={post.content} />
       </Column>
       <Column fillWidth gap="40" horizontal="center" marginTop="40">
