@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "build:pages": "set GITHUB_PAGES=true&& next build",
+    "build:pages": "set GITHUB_PAGES=true&& set GITHUB_REPOSITORY=kiera1512/portfolio&& next build",
     "biome-write": "biome format --write .",
     "start": "next start",
     "lint": "biome check .",
