@@ -59,6 +59,10 @@ npm run build
   [src/content/projects/en](./src/content/projects/en)
 - Anh public:
   [public/images](./public/images)
+- Quy uoc anh va kich thuoc:
+  [docs/image-guidelines.md](./docs/image-guidelines.md)
+- Nguon anh placeholder:
+  [docs/image-sources.md](./docs/image-sources.md)
 
 ## Deploy len GitHub Pages bang branch
 
@@ -117,6 +121,7 @@ Site se duoc publish tai:
 - thay `hello@example.com`
 - thay social links placeholder
 - thay avatar va project thumbnails
+- thay bo anh tam tu Unsplash bang anh that cua ban khi san sang
 - ra lai `baseURL` neu doi domain hoac doi ten repo
 
 ## License

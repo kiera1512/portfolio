@@ -19,7 +19,7 @@ const person: Person = {
   lastName: "Nguyen",
   name: "An Nguyen",
   role: "Frontend Developer",
-  avatar: "/images/avatar.jpg",
+  avatar: "/images/profile/profile-portrait.jpg",
   email: "hello@example.com",
   location: "Asia/Ho_Chi_Minh",
   locationLabel: "Ho Chi Minh City, Vietnam",
@@ -91,7 +91,7 @@ function createContent(locale: Locale): LocalizedContent {
   return {
     home: {
       path: getLocalizedPath(locale, "/"),
-      image: "/images/og/home.jpg",
+      image: "/images/og/og-home.jpg",
       label: isVietnamese ? "Trang chu" : "Home",
       title: isVietnamese ? `Portfolio cua ${person.name}` : `${person.name} Portfolio`,
       description: isVietnamese
@@ -189,8 +189,8 @@ function createContent(locale: Locale): LocalizedContent {
                 ],
             images: [
               {
-                src: "/images/projects/project-01/cover-01.jpg",
-                alt: "Dashboard preview",
+                src: "/images/projects/ops-dashboard-revamp/detail-monitor-setup.jpg",
+                alt: "Operations dashboard workspace setup",
                 width: 16,
                 height: 9,
               },
@@ -253,8 +253,8 @@ function createContent(locale: Locale): LocalizedContent {
             ],
             images: [
               {
-                src: "/images/projects/project-01/cover-04.jpg",
-                alt: "Next.js project",
+                src: "/images/projects/content-publishing-workflow/cover-content-planning.jpg",
+                alt: "Content planning workspace",
                 width: 16,
                 height: 9,
               },
@@ -276,8 +276,8 @@ function createContent(locale: Locale): LocalizedContent {
             ],
             images: [
               {
-                src: "/images/projects/project-01/cover-02.jpg",
-                alt: "Design system work",
+                src: "/images/projects/design-system-rollout/detail-wireframe-session.jpg",
+                alt: "Design system wireframing session",
                 width: 16,
                 height: 9,
               },
