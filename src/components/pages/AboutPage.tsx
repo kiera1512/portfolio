@@ -17,7 +17,7 @@ import {
 
 import TableOfContents from "@/components/about/TableOfContents";
 import styles from "@/components/about/about.module.scss";
-import { type Locale, baseURL, getContent, person, social } from "@/resources";
+import { type Locale, baseURL, getAssetPath, getContent, person, social } from "@/resources";
 
 export function getAboutMetadata(locale: Locale) {
   const { about, home } = getContent(locale);
@@ -97,7 +97,7 @@ export function AboutPage({ locale }: { locale: Locale }) {
             flex={3}
             horizontal="center"
           >
-            <Avatar src={person.avatar} size="xl" />
+            <Avatar src={getAssetPath(person.avatar)} size="xl" />
             <Row gap="8" vertical="center">
               <Icon onBackground="accent-weak" name="globe" />
               {person.locationLabel ?? person.location}
@@ -249,7 +249,7 @@ export function AboutPage({ locale }: { locale: Locale }) {
                               radius="m"
                               sizes={image.width.toString()}
                               alt={image.alt}
-                              src={image.src}
+                              src={getAssetPath(image.src)}
                             />
                           </Row>
                         ))}
@@ -325,7 +325,7 @@ export function AboutPage({ locale }: { locale: Locale }) {
                               radius="m"
                               sizes={image.width.toString()}
                               alt={image.alt}
-                              src={image.src}
+                              src={getAssetPath(image.src)}
                             />
                           </Row>
                         ))}

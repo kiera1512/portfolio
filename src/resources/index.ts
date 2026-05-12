@@ -10,6 +10,7 @@ export {
   defaultLocale,
   locales,
   getContent,
+  getAssetPath,
   getLocaleFromPathname,
   getLocalizedPath,
   normalizePathname,

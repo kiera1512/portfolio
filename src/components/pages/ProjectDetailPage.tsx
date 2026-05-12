@@ -16,7 +16,14 @@ import {
 
 import { CustomMDX, ScrollToHash } from "@/components";
 import { Projects } from "@/components/work/Projects";
-import { type Locale, baseURL, getContent, getLocalizedPath, person } from "@/resources";
+import {
+  type Locale,
+  baseURL,
+  getAssetPath,
+  getContent,
+  getLocalizedPath,
+  person,
+} from "@/resources";
 import { formatDate } from "@/utils/formatDate";
 import { getProjectBySlug, getProjectPosts } from "@/utils/utils";
 
@@ -55,7 +62,7 @@ export function ProjectDetailPage({ locale, slug }: { locale: Locale; slug: stri
 
   const avatars =
     post.metadata.team?.map((member) => ({
-      src: member.avatar,
+      src: getAssetPath(member.avatar),
     })) || [];
 
   return (
@@ -102,7 +109,13 @@ export function ProjectDetailPage({ locale, slug }: { locale: Locale; slug: stri
         </Row>
       </Row>
       {post.metadata.images.length > 0 && (
-        <Media priority aspectRatio="16 / 9" radius="m" alt="image" src={post.metadata.images[0]} />
+        <Media
+          priority
+          aspectRatio="16 / 9"
+          radius="m"
+          alt="image"
+          src={getAssetPath(post.metadata.images[0])}
+        />
       )}
       <Column style={{ margin: "auto" }} as="article" maxWidth="xs">
         <CustomMDX source={post.content} />

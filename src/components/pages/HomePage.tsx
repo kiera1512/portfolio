@@ -12,7 +12,7 @@ import {
 } from "@once-ui-system/core";
 
 import { Projects } from "@/components/work/Projects";
-import { type Locale, about, baseURL, getContent, person } from "@/resources";
+import { type Locale, about, baseURL, getAssetPath, getContent, person } from "@/resources";
 
 export function getHomeMetadata(locale: Locale) {
   const { home } = getContent(locale);
@@ -92,7 +92,7 @@ export function HomePage({ locale }: { locale: Locale }) {
                   <Avatar
                     marginRight="8"
                     style={{ marginLeft: "-0.75rem" }}
-                    src={person.avatar}
+                    src={getAssetPath(person.avatar)}
                     size="m"
                   />
                 )}

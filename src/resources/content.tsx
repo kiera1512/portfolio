@@ -63,6 +63,14 @@ export function normalizePathname(pathname: string) {
   return sanitizedPathname;
 }
 
+export function getAssetPath(path: string) {
+  if (!path.startsWith("/")) {
+    return path;
+  }
+
+  return siteBasePath ? `${siteBasePath}${path}` : path;
+}
+
 export function getLocaleFromPathname(pathname: string): Locale {
   const normalizedPathname = normalizePathname(pathname);
   return normalizedPathname === "/en" || normalizedPathname.startsWith("/en/")
